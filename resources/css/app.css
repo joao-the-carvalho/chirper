@@ -212,7 +212,7 @@ a:hover {
 }
 
 /* Timestamps / separators (like your `·` and “ago”) */
-.text-base-content\\/60 {
+.text-base-content\\\60 {
     color: var(--text-10) !important;
 }
 
