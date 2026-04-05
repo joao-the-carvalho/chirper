@@ -33,7 +33,7 @@
                         <li class="menu-title px-2 py-1">
                             <span class="font-semibold text-base-content">{{ auth()->user()->name }}</span>
                             @if (auth()->user()->username)
-                                <span class="text-xs text-base-content/50">@{{ auth()->user()->username }}</span>
+                                <span class="text-xs text-base-content/50">&#64;{{ auth()->user()->username }}</span>
                             @endif
                         </li>
                         <li>
