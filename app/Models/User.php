@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class User extends Authenticatable
 {
@@ -32,7 +33,7 @@ class User extends Authenticatable
 public function avatarUrl(): string
 {
     if ($this->avatar) {
-        return asset('storage/' . $this->avatar);
+        return cloudinary()->image($this->avatar)->toUrl();
     }
 
     return 'https://avatars.laravel.cloud/' . urlencode($this->email);
