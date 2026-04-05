@@ -33,3 +33,7 @@ Route::post('/login', Login::class)
 Route::post('/logout', Logout::class)
     ->middleware('auth')
     ->name('logout');
+
+Route::post('/profile', Profile::class)
+    ->middleware('auth')
+    ->name('/profile');

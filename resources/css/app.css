@@ -30,10 +30,10 @@
 
   /* Canvas + text (neutral / cooler beige balance) */
   --color-base-50:  #fafafa;  /* almost pure white, very faint gray */
-  --color-base-100: #f7f7f8;  /* neutral canvas */
-  --color-base-200: #ededee;  /* light neutral gray (still contrasty w/ border) */
+  --color-base-100: rgb(38, 38, 38);
+  --color-base-200: rgb(23, 23, 23);
   --color-base-300: #e0e1e3;  /* mid gray, cooler but not blue */
-  --color-base-content: #1a1a1c; /* neutral dark, softer than #111113 */
+  --color-base-content: #ffffff; /* neutral dark, softer than #111113 */
 
   /* Text tones */
   --text-12: var(--color-base-content);
@@ -192,7 +192,7 @@ a:hover {
 
 /* Toast-only success color */
 :where(.toast) {
-    --color-success: #598b6e;
+    --color-success: #e45858;
     --color-success-content: #ffffff;
 }
 

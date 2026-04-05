@@ -41,9 +41,10 @@ class ChirpPolicy
     }
 
     public function delete(User $user, Chirp $chirp): bool
-    {
-        return $chirp->user()->is($user);
-    }
+{
+    return $user->id === $chirp->user_id;
+}
+
     /**
      * Determine whether the user can restore the model.
      */
