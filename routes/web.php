@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\Register;
 use App\Http\Controllers\Auth\Login;
 use App\Http\Controllers\Auth\Logout;
@@ -13,6 +14,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/chirps/{chirp}/edit', [ChirpController::class, 'edit']);
     Route::put('/chirps/{chirp}', [ChirpController::class, 'update']);
     Route::delete('/chirps/{chirp}', [ChirpController::class, 'destroy']);
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::view('/register', 'auth.register')
@@ -34,6 +37,5 @@ Route::post('/logout', Logout::class)
     ->middleware('auth')
     ->name('logout');
 
-Route::post('/profile', Profile::class)
-    ->middleware('auth')
-    ->name('/profile');
+
+Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');

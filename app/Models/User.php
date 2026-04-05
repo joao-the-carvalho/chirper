@@ -20,10 +20,23 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    'name',
+    'email',
+    'password',
+    'username',
+    'bio',
+    'avatar',
+];
+
+// Adicione este método no fim da classe:
+public function avatarUrl(): string
+{
+    if ($this->avatar) {
+        return asset('storage/' . $this->avatar);
+    }
+
+    return 'https://avatars.laravel.cloud/' . urlencode($this->email);
+}
 
     /**
      * The attributes that should be hidden for serialization.

@@ -106,7 +106,7 @@ html[data-theme="laravelChirper"],
 :where(.input, .textarea) {
     border-radius: var(--radius-field);
     border: var(--border) solid var(--border-color-soft);
-    background: #fff;
+    background: #191919;
 }
 
 /* reduce default textarea padding a touch */
