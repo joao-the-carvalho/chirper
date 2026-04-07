@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -28,12 +27,14 @@ class User extends Authenticatable
     'bio',
     'avatar',
 ];
-
-// Adicione este método no fim da classe:
 public function avatarUrl(): string
 {
     if ($this->avatar) {
-        return cloudinary()->image($this->avatar)->toUrl();
+        try {
+            return cloudinary()->image($this->avatar)->toUrl();
+        } catch (\Exception $e) {
+            return 'https://avatars.laravel.cloud/' . urlencode($this->email);
+        }
     }
 
     return 'https://avatars.laravel.cloud/' . urlencode($this->email);
