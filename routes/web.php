@@ -37,5 +37,8 @@ Route::post('/logout', Logout::class)
     ->middleware('auth')
     ->name('logout');
 
+Route::get('/dd', function () {
+    return view("oi");
+});
 
 Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');

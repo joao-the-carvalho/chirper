@@ -36,18 +36,29 @@ class ProfileController extends Controller
     ]);
 
     if ($request->hasFile('avatar')) {
-        // Deleta o avatar antigo do Cloudinary se existir
-        if ($user->avatar) {
+        // deleta o avatar q tinha antes
+        if (!empty($user->avatar)) {
+        try {
             Cloudinary::destroy($user->avatar);
-        }
+            } catch (\Exception $e) {
+                // só pra ignorar o erro
+            }
+}
 
         // Faz upload e salva o public_id
-        $result = Cloudinary::upload(
-            $request->file('avatar')->getRealPath(),
-            ['folder' => 'chirper/avatars']
-        );
+        $result = null;
 
-        $validated['avatar'] = $result->getPublicId();
+        try {
+            $result = Cloudinary::uploadFile(
+                $request->file('avatar')->getRealPath(),
+                ['folder' => 'chirper/avatars']
+            );
+        } catch (\Exception $e) {
+        }
+
+        if ($result) {
+            $validated['avatar'] = $result->getPublicId();
+        }
     }
 
     $user->update($validated);
