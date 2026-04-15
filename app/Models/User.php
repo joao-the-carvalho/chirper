@@ -32,7 +32,7 @@ public function avatarUrl(): string
         try {
             if (app()->isProduction()) {
                 // Usa o R2
-                return Storage::disk('r2')->url($this->avatar);
+                return Storage::disk('cloud')->url($this->avatar);
             } else {
                 // Local
                 $localPath = storage_path('app/public/' . $this->avatar);

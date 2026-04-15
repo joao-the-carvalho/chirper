@@ -37,10 +37,8 @@ public function update(Request $request)
 
     // Define o disco baseado no ambiente
     if (app()->isProduction()) {
-        // Laravel Cloud: usa o bucket configurado
         $disk = config('filesystems.default', 'cloud');
     } else {
-        // Local: usa disco público
         $disk = 'public';
     }
 
