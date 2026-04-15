@@ -31,12 +31,10 @@ public function avatarUrl(): string
     if ($this->avatar) {
         try {
             if (app()->isProduction()) {
-                // S3
-                if (Storage::disk('s3')->exists($this->avatar)) {
-                    return Storage::disk('s3')->url($this->avatar);
-                }
+                // Usa o R2
+                return Storage::disk('r2')->url($this->avatar);
             } else {
-                // Local: verifica se o arquivo existe fisicamente
+                // Local
                 $localPath = storage_path('app/public/' . $this->avatar);
                 if (file_exists($localPath)) {
                     return asset('storage/' . $this->avatar);
@@ -47,10 +45,10 @@ public function avatarUrl(): string
         }
     }
     
-    // Fallback
     $name = urlencode($this->name ?? $this->username ?? explode('@', $this->email)[0]);
     return "https://ui-avatars.com/api/?name={$name}&background=6366f1&color=fff&size=200";
 }
+
     /**
      * The attributes that should be hidden for serialization.
      *

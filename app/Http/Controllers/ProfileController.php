@@ -35,16 +35,28 @@ public function update(Request $request)
         'avatar'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
     ]);
 
-    $disk = app()->isProduction() ? 's3' : 'public';
+    // Define o disco baseado no ambiente
+    if (app()->isProduction()) {
+        // Laravel Cloud: usa o bucket configurado
+        $disk = config('filesystems.default', 'cloud');
+    } else {
+        // Local: usa disco público
+        $disk = 'public';
+    }
 
     if ($request->hasFile('avatar')) {
         try {
+            // Deleta avatar antigo se existir
             if ($user->avatar) {
-                if (Storage::disk($disk)->exists($user->avatar)) {
+                try {
                     Storage::disk($disk)->delete($user->avatar);
+                } catch (\Exception $e) {
+                    // Se não conseguir deletar, continua (pode ser que não exista mais)
+                    \Log::warning('Não foi possível deletar avatar antigo: ' . $e->getMessage());
                 }
             }
 
+            // Salva novo avatar
             $path = $request->file('avatar')->store('avatars', [
                 'disk'       => $disk,
                 'visibility' => 'public',
