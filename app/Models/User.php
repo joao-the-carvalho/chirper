@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
+use Illuminate\Support\Facades\Storage;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -30,16 +29,14 @@ class User extends Authenticatable
 public function avatarUrl(): string
 {
     if ($this->avatar) {
-        try {
-            return cloudinary()->image($this->avatar)->toUrl();
-        } catch (\Exception $e) {
-            return 'https://avatars.laravel.cloud/' . urlencode($this->email);
+        if (app()->isProduction()) {
+            return env('AWS_URL') . '/' . $this->avatar;
         }
+        return asset('storage/' . $this->avatar);
     }
 
     return 'https://avatars.laravel.cloud/' . urlencode($this->email);
 }
-
     /**
      * The attributes that should be hidden for serialization.
      *

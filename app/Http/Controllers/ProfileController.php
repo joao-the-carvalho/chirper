@@ -24,7 +24,7 @@ class ProfileController extends Controller
         return view('profile.edit', ['user' => Auth::user()]);
     }
 
-    public function update(Request $request)
+public function update(Request $request)
 {
     $user = Auth::user();
 
@@ -35,30 +35,19 @@ class ProfileController extends Controller
         'avatar'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
     ]);
 
+    $disk = app()->isProduction() ? 's3' : 'public';
+
     if ($request->hasFile('avatar')) {
-        // deleta o avatar q tinha antes
-        if (!empty($user->avatar)) {
-        try {
-            Cloudinary::destroy($user->avatar);
-            } catch (\Exception $e) {
-                // só pra ignorar o erro
-            }
-}
-
-        // Faz upload e salva o public_id
-        $result = null;
-
-        try {
-            $result = Cloudinary::uploadFile(
-                $request->file('avatar')->getRealPath(),
-                ['folder' => 'chirper/avatars']
-            );
-        } catch (\Exception $e) {
+        if ($user->avatar) {
+            Storage::disk($disk)->delete($user->avatar);
         }
 
-        if ($result) {
-            $validated['avatar'] = $result->getPublicId();
-        }
+        $path = $request->file('avatar')->store('avatars', [
+            'disk'       => $disk,
+            'visibility' => 'public',
+        ]);
+
+        $validated['avatar'] = $path;
     }
 
     $user->update($validated);

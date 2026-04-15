@@ -15,7 +15,7 @@
     <nav class="navbar bg-base-100">
         <div class="navbar-start">
             <a href="/">
-                <img src="{{ asset('images/speed.gif') }}" alt="Logo" class="h-16 w-auto px-4">
+                <img src="{{ asset('images/fofoquis.png') }}" alt="Logo" class="h-16 w-auto px-4">
             </a>
         </div>
 
