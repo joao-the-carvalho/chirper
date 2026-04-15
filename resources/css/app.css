@@ -40,7 +40,7 @@
   --text-10: color-mix(in oklab, var(--color-base-content) 64%, transparent);
 
   /* Brand / actions */
-  --color-primary: #5580d2;            /* cooler button blue */
+  --color-primary: #de0909;            /* cooler button blue */
   --color-primary-content: #ffffff;
   --color-secondary: #2f3136;          /* neutral charcoal */
   --color-secondary-content: #ffffff;

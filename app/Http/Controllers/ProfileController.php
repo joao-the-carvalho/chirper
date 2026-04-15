@@ -38,16 +38,37 @@ public function update(Request $request)
     $disk = app()->isProduction() ? 's3' : 'public';
 
     if ($request->hasFile('avatar')) {
-        if ($user->avatar) {
-            Storage::disk($disk)->delete($user->avatar);
+        try {
+            if ($user->avatar) {
+                if (Storage::disk($disk)->exists($user->avatar)) {
+                    Storage::disk($disk)->delete($user->avatar);
+                }
+            }
+
+            $path = $request->file('avatar')->store('avatars', [
+                'disk'       => $disk,
+                'visibility' => 'public',
+            ]);
+
+            if (!$path) {
+                throw new \Exception('Falha ao salvar o arquivo');
+            }
+
+            $validated['avatar'] = $path;
+            
+            \Log::info('Avatar salvo com sucesso', [
+                'user_id' => $user->id,
+                'path' => $path,
+                'disk' => $disk
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('Erro ao salvar avatar: ' . $e->getMessage());
+            return redirect()
+                ->back()
+                ->with('error', 'Erro ao fazer upload da imagem: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $path = $request->file('avatar')->store('avatars', [
-            'disk'       => $disk,
-            'visibility' => 'public',
-        ]);
-
-        $validated['avatar'] = $path;
     }
 
     $user->update($validated);

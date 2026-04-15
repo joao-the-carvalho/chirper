@@ -29,15 +29,27 @@ class User extends Authenticatable
 public function avatarUrl(): string
 {
     if ($this->avatar) {
-        if (app()->isProduction()) {
-            return env('AWS_URL') . '/' . $this->avatar;
+        try {
+            if (app()->isProduction()) {
+                // S3
+                if (Storage::disk('s3')->exists($this->avatar)) {
+                    return Storage::disk('s3')->url($this->avatar);
+                }
+            } else {
+                // Local: verifica se o arquivo existe fisicamente
+                $localPath = storage_path('app/public/' . $this->avatar);
+                if (file_exists($localPath)) {
+                    return asset('storage/' . $this->avatar);
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('Erro no avatar: ' . $e->getMessage());
         }
-        return asset('storage/' . $this->avatar);
     }
-
-    // Fallback com iniciais do nome
-    $name = urlencode($this->name ?? $this->email);
-    return "https://ui-avatars.com/api/?name={$name}&background=random&color=fff&size=200";
+    
+    // Fallback
+    $name = urlencode($this->name ?? $this->username ?? explode('@', $this->email)[0]);
+    return "https://ui-avatars.com/api/?name={$name}&background=6366f1&color=fff&size=200";
 }
     /**
      * The attributes that should be hidden for serialization.
