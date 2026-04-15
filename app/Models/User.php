@@ -31,7 +31,6 @@ public function avatarUrl(): string
     if ($this->avatar) {
         try {
             if (app()->isProduction()) {
-                // Usa o R2
                 return Storage::disk('cloud')->url($this->avatar);
             } else {
                 // Local
