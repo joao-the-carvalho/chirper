@@ -35,7 +35,9 @@ public function avatarUrl(): string
         return asset('storage/' . $this->avatar);
     }
 
-    return 'https://avatars.laravel.cloud/' . urlencode($this->email);
+    // Fallback com iniciais do nome
+    $name = urlencode($this->name ?? $this->email);
+    return "https://ui-avatars.com/api/?name={$name}&background=random&color=fff&size=200";
 }
     /**
      * The attributes that should be hidden for serialization.
