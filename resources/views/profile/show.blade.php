@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="flex items-start gap-5">
                     <img src="{{ $user->avatarUrl() }}"
-                         class="w-20 h-20 rounded-full object-cover ring-2 ring-primary flex-shrink-0"
+                         class="w-20 h-20 rounded-full object-cover ring-2 ring-primary shrink-0"
                          alt="Avatar de {{ $user->name }}">
 
                     <div class="flex-1 min-w-0">
